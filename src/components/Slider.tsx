@@ -78,6 +78,7 @@ const Slider = () => {
               fill
               sizes="100%"
               className="object-cover rounded-lg brightness-75"
+              priority
             />
 
             <div className="absolute w-full h-full text-white text-center flex flex-col justify-center items-center gap-6">
