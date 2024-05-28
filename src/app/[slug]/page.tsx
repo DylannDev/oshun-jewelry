@@ -2,6 +2,7 @@ import ProductImages from "@/components/ProductImages";
 import ProductPageOptions from "@/components/ProductPageOptions";
 import { wixClientServer } from "@/lib/wixClientServer";
 import { notFound } from "next/navigation";
+import { products } from "@wix/stores";
 
 type SinglePageProps = {
   params: {
@@ -42,8 +43,7 @@ const SinglePage = async ({ params }: SinglePageProps) => {
           </div>
         )}
         <div className="h-[2px] bg-gray-100" />
-
-        <ProductPageOptions />
+        {product && <ProductPageOptions product={product} />}
         <div className="h-[2px] bg-gray-100" />
         <div className="">
           <h4 className="text-xs uppercase font-bold mb-4">Description</h4>
