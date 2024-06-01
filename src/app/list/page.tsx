@@ -15,7 +15,9 @@ const ListPage = async ({ searchParams }: { searchParams: any }) => {
     <>
       <BannerList />
       <Filter />
-      <h1 className="mt-12 mb-8 text-xl font-semibold ">Nos Bayas</h1>
+      <h1 className="mt-12 mb-8 text-xl font-semibold ">
+        {category?.collection?.name}
+      </h1>
       <Suspense fallback="Chargement...">
         <ProductList
           categoryId={
