@@ -2,6 +2,7 @@ import ProductImages from "@/components/ProductImages";
 import ProductPageOptions from "@/components/ProductPageOptions";
 import { wixClientServer } from "@/lib/wixClientServer";
 import { notFound } from "next/navigation";
+import DOMPurify from "isomorphic-dompurify";
 
 type SinglePageProps = {
   params: {
@@ -21,6 +22,9 @@ const SinglePage = async ({ params }: SinglePageProps) => {
   }
 
   const product = products.items[0];
+  const sanitizedDescription = product.description
+    ? DOMPurify.sanitize(product.description)
+    : "";
 
   return (
     <div className="relative flex flex-col lg:flex-row gap-16">
@@ -42,12 +46,16 @@ const SinglePage = async ({ params }: SinglePageProps) => {
           </div>
         )}
         <div className="h-[2px] bg-gray-100" />
-
-        <ProductPageOptions />
+        {product && <ProductPageOptions product={product} />}
         <div className="h-[2px] bg-gray-100" />
         <div className="">
           <h4 className="text-xs uppercase font-bold mb-4">Description</h4>
-          <p className="text-gray-500 text-sm">{product.description}</p>
+          <div
+            className="text-gray-500 text-sm"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(sanitizedDescription),
+            }}
+          ></div>
         </div>
       </div>
     </div>

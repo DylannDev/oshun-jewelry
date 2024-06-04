@@ -1,21 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const QuantityOption = () => {
-  const [quantity, setQuantity] = useState(1);
+type QuantityProps = {
+  quantity: number;
+  setQuantity: Dispatch<SetStateAction<number>>;
+  productId: string;
+  stockNumber: number;
+};
 
-  // Temporary
-  const stock = 4;
+const QuantityOption = ({
+  quantity,
+  setQuantity,
+  productId,
+  stockNumber,
+}: QuantityProps) => {
+  useEffect(() => {
+    if (stockNumber === 0) {
+      setQuantity(0);
+    }
+  }, [stockNumber, setQuantity]);
 
   const handleQuantity = (type: "increase" | "decrease") => {
     if (type === "decrease" && quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
-    if (type === "increase" && quantity < stock) {
+    if (type === "increase" && quantity < stockNumber) {
       setQuantity((prev) => prev + 1);
     }
   };
+
   return (
     <div className="flex flex-col gap-2">
       <h4 className="text-xs uppercase font-bold">Quantité</h4>
