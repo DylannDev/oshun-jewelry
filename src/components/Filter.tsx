@@ -1,10 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
+import { collections } from "@wix/stores";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
 
-const Filter = ({}) => {
+type FilterProps = { categories: collections.Collection[]; sizes: string[] };
+
+const Filter = ({ categories, sizes }: FilterProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -12,6 +14,11 @@ const Filter = ({}) => {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     const params = new URLSearchParams(searchParams.toString());
+
+    if (name === "cat" && value) {
+      params.delete("size");
+    }
+
     if (value) {
       params.set(name, value);
     } else {
@@ -19,34 +26,39 @@ const Filter = ({}) => {
     }
     router.replace(`${pathname}?${params.toString()}`);
   };
+
   return (
     <div className="mt-12 flex justify-between">
       <div className="flex gap-6 flex-wrap">
-        <select
-          name="size"
-          id=""
-          className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
-          onChange={handleFilterChange}
-        >
-          <option value="">Taille</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-        </select>
         <select
           name="cat"
           id=""
           className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
           onChange={handleFilterChange}
         >
-          <option value="">Catégories</option>
-          <option value="chaîne-de-taille">Chaînes de Taille</option>
-          <option value="Chaîne de Pied">Chaînes de Pied</option>
-          <option value="Boucles d'oreilles">Boucles d'oreilles</option>
-          <option value="Bracelets">Bracelets</option>
-          <option value="Colliers">Colliers</option>
-          <option value="Bagues">Bagues</option>
+          <option value="all-products">Catégories</option>
+          {categories.map(
+            (category) =>
+              category._id !== "00000000-000000-000000-000000000001" && (
+                <option key={category._id} value={category.slug || ""}>
+                  {category.name}
+                </option>
+              )
+          )}
+        </select>
+        <select
+          name="size"
+          id=""
+          className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
+          onChange={handleFilterChange}
+          value={searchParams.get("size") || ""}
+        >
+          <option value="">Taille</option>
+          {sizes.map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
         </select>
       </div>
       <div className="flex gap-6 h-fit">
