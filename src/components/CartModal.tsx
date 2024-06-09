@@ -1,16 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
+import useWixClient from "@/hooks/useWixClient";
 import Button from "./Button";
 import CartItem from "./CartItem";
 import { RxCross1 } from "react-icons/rx";
+import { useEffect } from "react";
+import { useCartStore } from "@/hooks/useCartStore";
+import { log } from "console";
 
 type CartModalProps = {
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CartModal = ({ setIsCartOpen }: CartModalProps) => {
-  const cartItems = true;
+  const { cart, isLoading } = useCartStore();
+
+  console.log(cart);
+
   return (
     <div className="w-max absolute p-6 rounded-lg shadow-md bg-white top-12 right-0 flex flex-col z-20 border border-gray-100">
       <div className="flex justify-between items-center">
@@ -20,12 +27,15 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
           onClick={() => setIsCartOpen(false)}
         />
       </div>
-      {!cartItems ? (
+      {!cart.lineItems ? (
         <p>Votre panier est vide.</p>
       ) : (
         <>
           <div className="flex flex-col gap-8 border-b border-gray-100 py-8">
-            <CartItem />
+            {cart.lineItems &&
+              cart.lineItems.map((item) => (
+                <CartItem key={item._id} cartItem={item} />
+              ))}
           </div>
           <div className="pt-8">
             <div className="flex items-center justify-between font-semibold">

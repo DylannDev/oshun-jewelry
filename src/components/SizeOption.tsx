@@ -20,8 +20,6 @@ const SizeOption = ({
 
   const options = sizeOptions[0].choices;
 
-  // console.log("selectedOptions", selectedOptions);
-
   return (
     <div className="flex flex-col gap-2">
       <h4 className="text-xs uppercase font-bold">Taille</h4>
