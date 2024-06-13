@@ -24,23 +24,23 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
 
   const wixClient = useWixClient();
 
-  // const { addItem } = useCartStore();
+  const { addItem } = useCartStore();
 
-  const addProduct = async () => {
-    const response = await wixClient.currentCart.addToCurrentCart({
-      lineItems: [
-        {
-          catalogReference: {
-            appId: process.env.NEXT_PUBLIC_WIX_APP_ID!,
-            catalogItemId: productId,
-            options: { variantId: variantId },
-          },
-          quantity: 1,
-        },
-      ],
-    });
-    console.log(response);
-  };
+  // const addProduct = async () => {
+  //   const { cart } = await wixClient.currentCart.addToCurrentCart({
+  //     lineItems: [
+  //       {
+  //         catalogReference: {
+  //           appId: process.env.NEXT_PUBLIC_WIX_APP_ID!,
+  //           catalogItemId: productId,
+  //           options: { variantId: variantId },
+  //         },
+  //         quantity: quantity,
+  //       },
+  //     ],
+  //   });
+  //   console.log(cart);
+  // };
 
   return (
     <div className="flex flex-col gap-8">
@@ -51,26 +51,22 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
           setSelectedOptions={setSelectedOptions}
         />
       )}
-      {productId && (
-        <QuantityOption
-          quantity={quantity}
-          setQuantity={setQuantity}
-          productId={productId}
-          stockNumber={stockNumber ? stockNumber : isInStock}
-        />
-      )}
+
+      <QuantityOption
+        quantity={quantity}
+        setQuantity={setQuantity}
+        stockNumber={stockNumber ? stockNumber : isInStock}
+      />
+
       <div className="flex flex-col gap-4">
         <Button href="/">Acheter</Button>
-        <Button color="white" onClick={addProduct} button>
-          Ajouter au panier
-        </Button>
-        {/* <Button
+        <Button
           color="white"
           onClick={() => addItem(wixClient, productId, variantId, quantity)}
           button
         >
           Ajouter au panier
-        </Button> */}
+        </Button>
       </div>
     </div>
   );

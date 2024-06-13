@@ -38,13 +38,13 @@ export const useCartStore = create<CartState>((set) => ({
             catalogItemId: productId,
             options: { variantId: variantId },
           },
-          quantity: 1,
+          quantity: quantity,
         },
       ],
     });
     console.log(response.cart);
 
-    console.log({ productId, variantId, quantity });
+    // console.log({ productId, variantId, quantity });
     set({
       cart: response.cart,
       counter: response.cart?.lineItems.length,

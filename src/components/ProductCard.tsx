@@ -15,7 +15,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
               src={product.media?.mainMedia?.image?.url}
               alt="baya bin bin oshun jewelry bijoux fantaisie"
               fill
-              sizes="25vw"
+              sizes="50vw"
               className="object-cover rounded-lg"
             />
           )}

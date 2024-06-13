@@ -10,7 +10,8 @@ type WixClientContextProviderProps = {
   children: React.ReactNode;
 };
 
-const refreshToken = JSON.parse(Cookies.get("refreshToken") || "{}");
+export const refreshToken = JSON.parse(Cookies.get("refreshToken") || "{}");
+export const accessToken = JSON.parse(Cookies.get("accessToken") || "{}");
 
 const wixClient = createClient({
   modules: {
@@ -21,10 +22,7 @@ const wixClient = createClient({
   },
   auth: OAuthStrategy({
     clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
-    tokens: {
-      refreshToken,
-      accessToken: { value: "", expiresAt: 0 },
-    },
+    tokens: { refreshToken, accessToken },
   }),
 });
 
