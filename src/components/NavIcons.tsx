@@ -28,7 +28,7 @@ const NavIcons = () => {
 
   const handleLogout = async () => {
     setIsLoading(true);
-    Cookies.remove("refreshToken");
+    Cookies.remove("session");
     const { logoutUrl } = await wixClient.auth.logout(window.location.href);
     setIsLoading(false);
     setIsProfileOpen(false);

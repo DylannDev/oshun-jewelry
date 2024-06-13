@@ -5,14 +5,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 type QuantityProps = {
   quantity: number;
   setQuantity: Dispatch<SetStateAction<number>>;
-  productId: string;
   stockNumber: number;
 };
 
 const QuantityOption = ({
   quantity,
   setQuantity,
-  productId,
   stockNumber,
 }: QuantityProps) => {
   useEffect(() => {
