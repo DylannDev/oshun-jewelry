@@ -11,6 +11,7 @@ type CartState = {
     wixClient: WixClient,
     productId: string,
     variantId: string,
+    selectedOptions: string,
     quantity: number
   ) => void;
   removeItem: (wixClient: WixClient, itemId: string) => void;
@@ -28,7 +29,13 @@ export const useCartStore = create<CartState>((set) => ({
       counter: cart?.lineItems.length || 0,
     });
   },
-  addItem: async (wixClient, productId, variantId, quantity) => {
+  addItem: async (
+    wixClient,
+    productId,
+    variantId,
+    selectedOptions,
+    quantity
+  ) => {
     set((state) => ({ ...state, isLoading: true }));
     const response = await wixClient.currentCart.addToCurrentCart({
       lineItems: [
@@ -36,15 +43,14 @@ export const useCartStore = create<CartState>((set) => ({
           catalogReference: {
             appId: process.env.NEXT_PUBLIC_WIX_APP_ID!,
             catalogItemId: productId,
-            options: { variantId: variantId },
+            options: { variantId: variantId, variantName: selectedOptions },
           },
-          quantity: 1,
+          quantity: quantity,
         },
       ],
     });
     console.log(response.cart);
 
-    console.log({ productId, variantId, quantity });
     set({
       cart: response.cart,
       counter: response.cart?.lineItems.length,
