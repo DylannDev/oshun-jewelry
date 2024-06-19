@@ -1,13 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import useWixClient from "@/hooks/useWixClient";
 import Button from "./Button";
 import CartItem from "./CartItem";
 import { RxCross1 } from "react-icons/rx";
-import { useEffect } from "react";
 import { useCartStore } from "@/hooks/useCartStore";
-import { log } from "console";
 
 type CartModalProps = {
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +13,7 @@ type CartModalProps = {
 const CartModal = ({ setIsCartOpen }: CartModalProps) => {
   const { cart, isLoading } = useCartStore();
 
-  console.log(cart);
+  console.log("cart", cart);
 
   return (
     <div className="w-max absolute p-6 rounded-lg shadow-md bg-white top-12 right-0 flex flex-col z-20 border border-gray-100">
@@ -40,7 +37,7 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
           <div className="pt-8">
             <div className="flex items-center justify-between font-semibold">
               <span>Total</span>
-              <span>49€</span>
+              <span>{cart.subtotal.amount}€</span>
             </div>
             <p className="text-gray-500 text-xs font-light mt-2 mb-4">
               Les frais d'expédition seront ajoutés lors du paiement.

@@ -6,7 +6,7 @@ import { currentCart, cart } from "@wix/ecom";
 import { useCartStore } from "@/hooks/useCartStore";
 import useWixClient from "@/hooks/useWixClient";
 
-type cartItemProps = { cartItem: currentCart.Cart };
+type cartItemProps = { cartItem: currentCart.LineItem };
 
 const CartItem = ({ cartItem }: cartItemProps) => {
   const wixClient = useWixClient();
@@ -25,14 +25,15 @@ const CartItem = ({ cartItem }: cartItemProps) => {
       <div className="flex flex-col justify-between gap-8">
         <div>
           <div className="flex items-center justify-between gap-12">
-            <h3 className="font-semibold">{"Nom du produit"}</h3>
-            <div className="">49€</div>
+            <h3 className="font-semibold">{cartItem.productName?.original}</h3>
+            <div className="">{cartItem.price?.amount}€</div>
           </div>
           <div className="text-xs text-green-500">En stock</div>
         </div>
         <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-500">Quantité: {cartItem.quantity}x</span>
           <span className="text-gray-500">
-            Quantité: {cartItem.lineItems && cartItem.lineItems[0].quantity}x
+            Taille: {cartItem.catalogReference?.options?.variantName}
           </span>
           <RiDeleteBin2Line
             className="text-xl cursor-pointer hover:text-red-light"
