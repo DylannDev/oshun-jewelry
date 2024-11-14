@@ -20,7 +20,7 @@ export const updateUser = async (formData: FormData) => {
       contact: {
         firstName: firstName || undefined,
         lastName: lastName || undefined,
-        phones: [phone] || undefined,
+        phones: phone ? [phone] : undefined,
         addresses: [
           {
             addressLine: addressLine || undefined,
