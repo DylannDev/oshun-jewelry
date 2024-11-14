@@ -29,29 +29,9 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
   const wixClient = useWixClient();
   const { addItem, isLoading } = useCartStore();
 
-<<<<<<< HEAD
   const handleAddToCart = () => {
     addItem(wixClient, productId, quantity, selectedOptions);
   };
-=======
-  const { addItem } = useCartStore();
-
-  // const addProduct = async () => {
-  //   const { cart } = await wixClient.currentCart.addToCurrentCart({
-  //     lineItems: [
-  //       {
-  //         catalogReference: {
-  //           appId: process.env.NEXT_PUBLIC_WIX_APP_ID!,
-  //           catalogItemId: productId,
-  //           options: { variantId: variantId },
-  //         },
-  //         quantity: quantity,
-  //       },
-  //     ],
-  //   });
-  //   console.log(cart);
-  // };
->>>>>>> main
 
   return (
     <div className="flex flex-col gap-8">
@@ -59,17 +39,12 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
         <SizeOption
           sizeOptions={sizes}
           selectedOptions={selectedOptions}
-<<<<<<< HEAD
           setSelectedOptions={(value) => setSelectedOptions(productId, value)}
-=======
-          setSelectedOptions={setSelectedOptions}
->>>>>>> main
         />
       )}
 
       <QuantityOption
         quantity={quantity}
-<<<<<<< HEAD
         setQuantity={(value) => setQuantity(productId, value)}
         stockNumber={stockNumber ? stockNumber : isInStock}
       />
@@ -77,22 +52,6 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
       <Button onClick={handleAddToCart} disabled={isLoading} button>
         Ajouter au panier
       </Button>
-=======
-        setQuantity={setQuantity}
-        stockNumber={stockNumber ? stockNumber : isInStock}
-      />
-
-      <div className="flex flex-col gap-4">
-        <Button href="/">Acheter</Button>
-        <Button
-          color="white"
-          onClick={() => addItem(wixClient, productId, variantId, quantity)}
-          button
-        >
-          Ajouter au panier
-        </Button>
-      </div>
->>>>>>> main
     </div>
   );
 };
