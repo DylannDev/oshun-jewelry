@@ -13,7 +13,7 @@ type SinglePageProps = {
 };
 
 const SinglePage = async ({ params }: SinglePageProps) => {
-  const { slug } = await params;
+  const { slug } = params;
   const decodedSlug = decodeURIComponent(slug); // Décodage du slug
   const wixClient = await wixClientServer();
 
