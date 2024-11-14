@@ -51,7 +51,6 @@ export const useCartStore = create<CartState>((set) => ({
             },
             quantity: quantity,
           },
-<<<<<<< HEAD
         ],
       });
 
@@ -66,20 +65,6 @@ export const useCartStore = create<CartState>((set) => ({
       }
       set({ isLoading: false });
     }
-=======
-          quantity: quantity,
-        },
-      ],
-    });
-    console.log(response.cart);
-
-    // console.log({ productId, variantId, quantity });
-    set({
-      cart: response.cart,
-      counter: response.cart?.lineItems.length,
-      isLoading: false,
-    });
->>>>>>> main
   },
 
   removeItem: async (wixClient, itemId) => {
