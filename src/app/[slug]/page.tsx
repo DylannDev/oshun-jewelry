@@ -7,13 +7,13 @@ import DOMPurify from "isomorphic-dompurify";
 import ShopValues from "@/components/ShopValues";
 
 type SinglePageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const SinglePage = async ({ params }: SinglePageProps) => {
-  const { slug } = params;
+  const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug); // Décodage du slug
   const wixClient = await wixClientServer();
 

@@ -65,7 +65,7 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
           <div className="pt-8">
             <div className="flex items-center justify-between font-semibold">
               <span>Total</span>
-              <span>{cart.subtotal.amount}€</span>
+              <span>{parseFloat(cart.subtotal?.amount || "0")}€</span>
             </div>
             <p className="text-gray-500 text-xs font-light mt-2 mb-4">
               Les frais d'expédition seront ajoutés lors du paiement.

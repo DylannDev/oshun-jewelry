@@ -150,7 +150,7 @@ const LoginPage = () => {
     setError("");
   };
   return (
-    <div className="h-[calc(100vh-80px)] flex items-center justify-center">
+    <div className="flex-grow flex items-center justify-center">
       <form
         className="flex flex-col gap-6 min-w-[350px]"
         onSubmit={handleSubmit}

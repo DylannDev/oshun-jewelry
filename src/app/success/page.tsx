@@ -1,19 +1,20 @@
 "use client";
+
+import Loader from "@/components/Loader";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import Confetti from "react-confetti";
 
-const SuccessPage = () => {
+const SuccessPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const orderId = searchParams.get("orderId");
 
   useEffect(() => {
     if (!orderId) return;
 
     const timer = setTimeout(() => {
-      router.push("/orders" + orderId);
+      router.push("/orders/" + orderId);
     }, 6000);
 
     return () => clearTimeout(timer);
@@ -30,6 +31,14 @@ const SuccessPage = () => {
         Redirection vers la page des commandes...
       </h3>
     </div>
+  );
+};
+
+const SuccessPage = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <SuccessPageContent />
+    </Suspense>
   );
 };
 

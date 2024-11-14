@@ -9,20 +9,20 @@ const ProfilePage = async () => {
   const wixClient = await wixClientServer();
 
   try {
-    // Récupérez les informations de l'utilisateur
+    // Vérifier l'authentification de l'utilisateur
     const user = await wixClient.members.getCurrentMember({
       fieldsets: [members.Set.FULL],
     });
 
-    // Vérifiez si l'utilisateur est authentifié
-    if (!user.member?.contactId) {
-      throw new Error("User not authenticated");
+    if (!user || !user.member || !user.member.contactId) {
+      console.error("User is not authenticated or missing contactId");
+      return redirect("/login");
     }
 
-    // Récupérez les commandes de l'utilisateur
+    // Récupérer les commandes de l'utilisateur connecté
     const orderRes = await wixClient.orders.searchOrders({
       search: {
-        filter: { "buyerInfo.contactId": { $eq: user.member?.contactId } },
+        filter: { "buyerInfo.contactId": { $eq: user.member.contactId } },
       },
     });
 
@@ -56,9 +56,8 @@ const ProfilePage = async () => {
       </div>
     );
   } catch (error) {
-    console.error("User not authenticated or an error occurred:", error);
-    // Redirigez vers la page de connexion en cas d'erreur d'authentification
-    redirect("/login");
+    console.error("Error retrieving user or orders:", error);
+    return redirect("/login"); // Redirige vers la page de connexion en cas d'erreur
   }
 };
 

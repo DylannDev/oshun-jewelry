@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { WixClientContextProvider } from "@/context/wixContext";
+import { Suspense } from "react";
+import Loader from "@/components/Loader";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -22,9 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <WixClientContextProvider>
-          <div className="mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24">
+          <div className="flex flex-col min-h-screen mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24">
             <Navbar />
-            {children}
+            <Suspense fallback={<Loader />}>{children}</Suspense>
           </div>
           <Footer />
         </WixClientContextProvider>

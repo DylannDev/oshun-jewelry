@@ -23,10 +23,10 @@ const SizeOption = ({
   const firstOption = options && options[0].value;
 
   useEffect(() => {
-    if (firstOption) {
+    if (!selectedOptions && firstOption) {
       setSelectedOptions(firstOption);
     }
-  }, []);
+  }, [firstOption, selectedOptions, setSelectedOptions]);
 
   const handleSizeClick = (value: string) => {
     setSelectedOptions(value);
