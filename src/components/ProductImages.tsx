@@ -1,18 +1,20 @@
 import Image from "next/image";
+import { products } from "@wix/stores";
 
-const ProductImages = ({ images }: { images: any }) => {
+type ProductImagesProps = products.MediaItem[];
+
+const ProductImages = ({ images }: { images: ProductImagesProps }) => {
   return (
-    <div>
-      <div className="relative w-full pt-[100%]">
+    <div className="grid grid-cols-2 gap-4">
+      {images.map((image) => (
         <Image
-          src={images[0].image?.url}
-          alt="oshun jewelery bijoux artisanaux"
-          fill
-          sizes="100%"
-          className="object-cover rounded-lg"
+          key={image._id}
+          src={image.image?.url || ""}
+          alt="oshun jewelry bijoux artisanaux"
+          width={image.image?.width || 300}
+          height={image.image?.height || 500}
         />
-      </div>
-      <div className=""></div>
+      ))}
     </div>
   );
 };

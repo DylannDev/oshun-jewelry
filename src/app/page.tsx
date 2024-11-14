@@ -1,50 +1,42 @@
-// "use client";
-
 import CategoryList from "@/components/CategoryList";
 import ProductList from "@/components/ProductList";
 import Slider from "@/components/Slider";
 import { wixClientServer } from "@/lib/wixClientServer";
-
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
+import ShopValues from "@/components/ShopValues";
 
 const HomePage = async () => {
-  // const wixClient = useWixClient();
-
-  // useEffect(() => {
-  //   const getProducts = async () => {
-  //     const res = await wixClient.products.queryProducts().find();
-  //     console.log(res);
-  //   };
-
-  //   getProducts();
-  // }, [wixClient]);
-
   const wixClient = await wixClientServer();
-
-  const res = await wixClient.products.queryProducts().find();
+  const categories = await wixClient.collections.queryCollections().find();
 
   return (
     <div className="">
       <Slider />
       <div className="mt-24">
-        <h1 className="text-2xl mb-8">Les Nouveautés</h1>
+        <h1 className="heading-home">Nouveautés</h1>
         <Suspense fallback={"loading"}>
           <ProductList
             categoryId={process.env.FEATURED_PRODUCTS_CATEGORY_ID!}
-            limit={4}
+            limit={5}
           />
         </Suspense>
       </div>
       <div className="mt-24">
-        <h1 className="text-2xl">Nos produits</h1>
+        <h1 className="heading-home">Nos produits</h1>
         <Suspense fallback={"loading"}>
-          <CategoryList />
+          <CategoryList categories={categories} />
         </Suspense>
       </div>
       <div className="mt-24">
-        <h1 className="text-2xl mb-8">Les Bayas avec pierre</h1>
-        {/* <ProductList /> */}
+        <h1 className="heading-home">Tendances</h1>
+        <Suspense fallback={"loading"}>
+          <ProductList
+            categoryId={process.env.TRENDING_PRODUCTS_CATEGORY_ID!}
+            limit={5}
+          />
+        </Suspense>
       </div>
+      <ShopValues />
     </div>
   );
 };

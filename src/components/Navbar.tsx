@@ -1,39 +1,52 @@
+"use client";
+
 import Link from "next/link";
 import Menu from "./Menu";
 import Searchbar from "./Searchbar";
-import dynamic from "next/dynamic";
-// import NavIcons from './NavIcons';
-
-const NavIcons = dynamic(() => import("./NavIcons"), { ssr: false });
+import NavIcons from "./NavIcons";
+import Logo from "./Logo";
+import { navbarLinks } from "@/config/data";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
   return (
-    <div className="h-20 relative">
+    <div className="h-20 relative flex justify-center">
       {/* MOBILE */}
-      <div className="flex items-center justify-between h-full md:hidden">
-        <Link href="/" className="text-2xl font-bold">
-          OSHUN
-        </Link>
+      <div className="flex items-center justify-between h-full w-full md:hidden">
+        <Logo />
         <Menu />
       </div>
       {/* SCREENS */}
-      <div className="hidden md:flex items-center justify-between gap-8 h-full">
-        {/* LEFT */}
-        <div className="w-1/3 xl:w-1/2 flex items-center gap-12">
-          <Link href="/" className="text-2xl font-bold">
-            OSHUN
-          </Link>
-          <div className="hidden xl:flex gap-4">
-            <Link href="/">Accueil</Link>
-            <Link href="/">Nos Bijoux</Link>
-            <Link href="/">À Propos</Link>
-            <Link href="/">Contact</Link>
+      <div className="hidden md:flex fixed w-full z-50 bg-white mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24 h-[80px] border-b border-gray-200">
+        <div className="hidden md:flex items-center justify-between gap-8 h-full w-full">
+          <Logo />
+          <div className="relative w-full flex justify-center">
+            {isVisible ? (
+              <div
+                className={`absolute w-full opacity-100 h-full max-w-[1000px] flex justify-center items-center`}
+              >
+                <Searchbar isVisible={isVisible} setIsVisible={setIsVisible} />
+              </div>
+            ) : (
+              <nav className="hidden xl:flex gap-4 text-sm">
+                {navbarLinks.map(
+                  (link, index) =>
+                    index < 5 && (
+                      <Link
+                        key={index}
+                        href={`/list?cat=${link.href}`}
+                        className="hover:underline underline-offset-8"
+                      >
+                        {link.label}
+                      </Link>
+                    )
+                )}
+              </nav>
+            )}
           </div>
-        </div>
-        {/* RIGHT */}
-        <div className="w-2/3 xl:w-1/2 flex items-center justify-between gap-8">
-          <Searchbar />
-          <NavIcons />
+          <NavIcons isVisible={isVisible} setIsVisible={setIsVisible} />
         </div>
       </div>
     </div>

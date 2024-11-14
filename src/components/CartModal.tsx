@@ -5,13 +5,40 @@ import Button from "./Button";
 import CartItem from "./CartItem";
 import { RxCross1 } from "react-icons/rx";
 import { useCartStore } from "@/hooks/useCartStore";
+import useWixClient from "@/hooks/useWixClient";
+import { currentCart } from "@wix/ecom";
 
 type CartModalProps = {
   setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const CartModal = ({ setIsCartOpen }: CartModalProps) => {
+  const wixClient = useWixClient();
   const { cart, isLoading } = useCartStore();
+
+  const handleCheckout = async () => {
+    try {
+      const checkout =
+        await wixClient.currentCart.createCheckoutFromCurrentCart({
+          channelType: currentCart.ChannelType.WEB,
+        });
+
+      const { redirectSession } =
+        await wixClient.redirects.createRedirectSession({
+          ecomCheckout: { checkoutId: checkout.checkoutId },
+          callbacks: {
+            postFlowUrl: window.location.origin,
+            thankYouPageUrl: `${window.location.origin}/success`,
+          },
+        });
+
+      if (redirectSession?.fullUrl) {
+        window.location.href = redirectSession.fullUrl;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   console.log("cart", cart);
 
@@ -24,15 +51,16 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
           onClick={() => setIsCartOpen(false)}
         />
       </div>
-      {!cart.lineItems ? (
+      {isLoading ? (
+        "Chargement..."
+      ) : !cart || !cart.lineItems || cart.lineItems.length === 0 ? (
         <p>Votre panier est vide.</p>
       ) : (
         <>
           <div className="flex flex-col gap-8 border-b border-gray-100 py-8">
-            {cart.lineItems &&
-              cart.lineItems.map((item) => (
-                <CartItem key={item._id} cartItem={item} />
-              ))}
+            {cart.lineItems.map((item) => (
+              <CartItem key={item._id} cartItem={item} />
+            ))}
           </div>
           <div className="pt-8">
             <div className="flex items-center justify-between font-semibold">
@@ -46,7 +74,13 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
               <Button href="/" color="white">
                 Voir le panier
               </Button>
-              <Button href="/" color="green">
+              <Button
+                href="/"
+                color="green"
+                disabled={isLoading}
+                onClick={handleCheckout}
+                button
+              >
                 Paiement
               </Button>
             </div>

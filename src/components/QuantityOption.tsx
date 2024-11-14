@@ -31,16 +31,16 @@ const QuantityOption = ({
   return (
     <div className="flex flex-col gap-2">
       <h4 className="text-xs uppercase font-bold">Quantité</h4>
-      <div className="flex items-center justify-between gap-4 bg-gray-100 py-2 px-4 rounded-lg w-32">
+      <div className="flex items-center justify-between gap-4 bg-white border border-gray-200 py-2 rounded-lg w-32">
         <button
-          className="cursor-pointer text-xl font-light"
+          className="cursor-pointer text-xl font-light px-4"
           onClick={() => handleQuantity("decrease")}
         >
           -
         </button>
         <div className="text-sm">{quantity}</div>
         <button
-          className="cursor-pointer text-xl font-light"
+          className="cursor-pointer text-xl font-light px-4"
           onClick={() => handleQuantity("increase")}
         >
           +
