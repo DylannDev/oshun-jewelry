@@ -13,3 +13,19 @@
 .hover-underline a:hover {
   text-decoration: underline;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+.description {
+  ul {
+    @apply flex flex-col gap-1 list-disc pl-4;
+  }
+}
+
+.heading-home {
+  @apply text-2xl mb-8 font-semibold uppercase;
+}

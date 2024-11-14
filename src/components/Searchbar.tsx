@@ -1,10 +1,13 @@
 "use client";
 
+import { SearchbarProps } from "@/types";
 import { useRouter } from "next/navigation";
-import { PiMagnifyingGlassBold } from "react-icons/pi";
+import { CiSearch } from "react-icons/ci";
+import { TfiClose } from "react-icons/tfi";
 
-const Searchbar = () => {
+const Searchbar = ({ setIsVisible }: SearchbarProps) => {
   const router = useRouter();
+
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -17,18 +20,23 @@ const Searchbar = () => {
 
   return (
     <form
-      className="flex items-center justify-between gap-4 bg-gray-100 py-2 px-4 rounded-md flex-1"
+      className={`h-[50px] w-full flex items-center justify-between gap-4 bg-white border border-slate-300 hover:border-black py-2 px-4 rounded-full`}
       onSubmit={handleSearch}
     >
-      <input
-        type="text"
-        name="name"
-        placeholder="Recherche..."
-        className="bg-transparent placeholder:font-light placeholder:text-sm flex-1 outline-none text-gray-500"
-      />
-      <div className="cursor-pointer">
-        <PiMagnifyingGlassBold className="text-xl text-gray-500" />
+      <div className="flex items-center gap-1 w-full">
+        <CiSearch className="text-2xl" />
+        <input
+          type="text"
+          name="name"
+          placeholder="Recherche..."
+          className="bg-transparent placeholder:font-light placeholder:text-sm text-sm font-light flex-1 outline-none placeholder:text-slate-500 w-full"
+        />
       </div>
+
+      <TfiClose
+        className="cursor-pointer "
+        onClick={() => setIsVisible(false)}
+      />
     </form>
   );
 };

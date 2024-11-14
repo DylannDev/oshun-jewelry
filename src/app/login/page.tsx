@@ -9,6 +9,7 @@ import { useState } from "react";
 import { PiArrowLeftLight } from "react-icons/pi";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 enum MODE {
   LOGIN = "LOGIN",
@@ -22,9 +23,12 @@ const LoginPage = () => {
 
   const isLoggedIn = wixClient.auth.loggedIn();
 
-  if (isLoggedIn) {
-    router.push("/");
-  }
+  // Utiliser useEffect pour rediriger si l'utilisateur est déjà connecté
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn, router]);
 
   const [mode, setMode] = useState(MODE.LOGIN);
 

@@ -9,7 +9,8 @@ const slides = [
     id: 1,
     title: "Nouvelle collection de Baya",
     description: "Découvrez la nouvelle collection été 2024",
-    img: "/baya.jpeg",
+    img: "/Hero.webp",
+    imgClassName: "object-right",
     bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
     url: "/",
   },
@@ -17,15 +18,8 @@ const slides = [
     id: 2,
     title: "Nouvelle collection de Baya",
     description: "Découvrez la nouvelle collection été 2024",
-    img: "/baya.jpeg",
-    bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
-    url: "/",
-  },
-  {
-    id: 3,
-    title: "Nouvelle collection de Baya",
-    description: "Découvrez la nouvelle collection été 2024",
-    img: "/baya.jpeg",
+    img: "/Hero2.webp",
+    imgClassName: "object-top",
     bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
     url: "/",
   },
@@ -69,7 +63,7 @@ const Slider = () => {
         {slides.map((slide, index) => (
           <div
             ref={index === current ? sliderRef : null}
-            className="relative w-[calc(100vw-32px)] md:w-[calc(100vw-64px)] lg:w-[calc(100vw-128px)] xl:w-[calc(100vw-256px)] h-[600px] "
+            className="relative w-[calc(100vw-32px)] md:w-[calc(100vw-64px)] lg:w-[calc(100vw-96px)] xl:w-[calc(100vw-192px)] h-[600px]"
             key={slide.id}
           >
             <Image
@@ -77,20 +71,26 @@ const Slider = () => {
               alt="bannière bijoux oshun jewelry"
               fill
               sizes="100%"
-              className="object-cover rounded-lg brightness-75"
+              className={`object-cover brightness-90 ${slide.imgClassName}`}
               priority
             />
 
-            <div className="absolute w-full h-full text-white text-center flex flex-col justify-center items-center gap-6">
-              <h2 className="text-3xl lg:text-4xl 2xl:text-5xl font-light">
-                {slide.description}
-              </h2>
-              <h1 className="text-2xl lg:text-3xl 2xl:text-5xl font-semibold">
-                {slide.title}
-              </h1>
-              <Button href={slide.url} width="normal">
-                Découvrir
-              </Button>
+            <div className="relative w-full h-full grid place-content-center">
+              <div className="absolute bottom-32 flex flex-col justify-center items-center gap-6 w-full">
+                <div className="relative w-[300px]">
+                  <Image
+                    src={"/sunday_club_white.svg"}
+                    alt="bannière bijoux oshun jewelry"
+                    width={300}
+                    height={100}
+                    className={`object-cover ${slide.imgClassName}`}
+                    priority
+                  />
+                </div>
+                <Button color="white" href={slide.url} width="normal">
+                  Découvrir la collection
+                </Button>
+              </div>
             </div>
           </div>
         ))}

@@ -4,16 +4,31 @@ import Filter from "@/components/Filter";
 import ProductList from "@/components/ProductList";
 import { wixClientServer } from "@/lib/wixClientServer";
 import { Suspense } from "react";
+import NotFound from "../not-found";
 
 type ListPageProps = {
-  searchParams: any;
+  searchParams: {
+    cat?: string;
+  };
 };
 
 const ListPage = async ({ searchParams }: ListPageProps) => {
+  const { cat } = await searchParams;
   const wixClient = await wixClientServer();
-  const category = await wixClient.collections.getCollectionBySlug(
-    searchParams.cat || "all-products"
-  );
+
+  let category;
+  try {
+    category = await wixClient.collections.getCollectionBySlug(
+      cat || "all-products"
+    );
+  } catch (error: any) {
+    if (error?.details?.applicationError?.code === "CATEGORY_NOT_FOUND") {
+      return <NotFound />;
+    } else {
+      throw error; // Autres erreurs non gérées
+    }
+  }
+
   const categories = (await wixClient.collections.queryCollections().find())
     .items;
 
@@ -41,8 +56,6 @@ const ListPage = async ({ searchParams }: ListPageProps) => {
   // Trier les tailles selon l'ordre défini
   sizes.sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
 
-  console.log("sizes", sizes);
-
   return (
     <>
       <BannerList />
@@ -55,7 +68,6 @@ const ListPage = async ({ searchParams }: ListPageProps) => {
           categoryId={
             category.collection?._id || "00000000-000000-000000-000000000001"
           }
-          searchParams={searchParams}
         />
       </Suspense>
     </>

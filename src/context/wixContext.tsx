@@ -2,9 +2,10 @@
 
 import { createClient, OAuthStrategy } from "@wix/sdk";
 import { products, collections } from "@wix/stores";
-import { currentCart, cart } from "@wix/ecom";
+import { cart, currentCart } from "@wix/ecom";
 import Cookies from "js-cookie";
 import { createContext } from "react";
+import { redirects } from "@wix/redirects";
 
 type WixClientContextProviderProps = {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ const wixClient = createClient({
     collections,
     currentCart,
     cart,
+    redirects,
   },
   auth: OAuthStrategy({
     clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
@@ -29,7 +31,6 @@ const wixClient = createClient({
 export type WixClient = typeof wixClient;
 
 export const WixClientContext = createContext<WixClient>(wixClient);
-
 export const WixClientContextProvider = ({
   children,
 }: WixClientContextProviderProps) => {

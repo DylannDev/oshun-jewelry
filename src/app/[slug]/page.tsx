@@ -2,7 +2,9 @@ import ProductImages from "@/components/ProductImages";
 import ProductPageOptions from "@/components/ProductPageOptions";
 import { wixClientServer } from "@/lib/wixClientServer";
 import { notFound } from "next/navigation";
+import AccordionDescription from "@/components/AccordionDescription";
 import DOMPurify from "isomorphic-dompurify";
+import ShopValues from "@/components/ShopValues";
 
 type SinglePageProps = {
   params: {
@@ -11,10 +13,13 @@ type SinglePageProps = {
 };
 
 const SinglePage = async ({ params }: SinglePageProps) => {
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug); // Décodage du slug
   const wixClient = await wixClientServer();
+
   const products = await wixClient.products
     .queryProducts()
-    .eq("slug", params.slug)
+    .eq("slug", decodedSlug)
     .find();
 
   if (!products.items[0]) {
@@ -27,38 +32,39 @@ const SinglePage = async ({ params }: SinglePageProps) => {
     : "";
 
   return (
-    <div className="relative flex flex-col lg:flex-row gap-16">
-      <div className="w-full lg:w-1/2 lg:sticky top-20 h-max ">
-        <ProductImages images={product.media?.items} />
-      </div>
-      <div className="w-full lg:w-1/2 flex flex-col gap-6">
-        <h1 className="text-4xl font-medium">{product.name}</h1>
-        {product.price?.price === product.price?.discountedPrice ? (
-          <h2 className="font-medium text-2xl ">€{product.price?.price} </h2>
-        ) : (
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg text-gray-500 line-through ">
-              €{product.price?.price}
-            </h3>
-            <h2 className="font-medium text-2xl ">
-              €{product.price?.discountedPrice}{" "}
-            </h2>
+    <>
+      <div className="relative flex flex-col lg:flex-row gap-10">
+        <div className="w-full lg:w-2/3 h-max">
+          {product.media?.items && (
+            <ProductImages images={product.media.items} />
+          )}
+        </div>
+        <div className="relative w-full lg:w-1/3">
+          <div className="sticky top-24 flex flex-col gap-4">
+            <div className="">
+              <h1 className="text-xl font-medium mb-2">{product.name}</h1>
+              {product.priceData?.price ===
+              product.priceData?.discountedPrice ? (
+                <h2 className="">€{product.priceData?.price}</h2>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg text-gray-500 line-through">
+                    €{product.priceData?.price}
+                  </h3>
+                  <h2 className="font-medium text-2xl">
+                    €{product.priceData?.discountedPrice}
+                  </h2>
+                </div>
+              )}
+            </div>
+            <div className="h-[1px] bg-gray-300" />
+            {product && <ProductPageOptions product={product} />}
+            <AccordionDescription sanitizedDescription={sanitizedDescription} />
           </div>
-        )}
-        <div className="h-[2px] bg-gray-100" />
-        {product && <ProductPageOptions product={product} />}
-        <div className="h-[2px] bg-gray-100" />
-        <div className="">
-          <h4 className="text-xs uppercase font-bold mb-4">Description</h4>
-          <div
-            className="text-gray-500 text-sm"
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(sanitizedDescription),
-            }}
-          ></div>
         </div>
       </div>
-    </div>
+      <ShopValues />
+    </>
   );
 };
 

@@ -5,25 +5,35 @@ import SizeOption from "./SizeOption";
 import QuantityOption from "./QuantityOption";
 import { products } from "@wix/stores";
 import useWixClient from "@/hooks/useWixClient";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useCartStore } from "@/hooks/useCartStore";
+import { findMatchingVariant } from "@/utils/array";
+import { useProductOptionsStore } from "@/hooks/useProductOptionsStore";
 
 type ProductOptionsProps = {
   product: products.Product;
 };
 
 const ProductPageOptions = ({ product }: ProductOptionsProps) => {
-  const [selectedOptions, setSelectedOptions] = useState<string>("");
-  const [quantity, setQuantity] = useState<number>(1);
+  const productId = product._id!;
+  const { productOptions, setSelectedOptions, setQuantity } =
+    useProductOptionsStore();
+
+  const selectedOptions = productOptions[productId]?.selectedOptions || "";
+  const quantity = productOptions[productId]?.quantity || 1;
 
   const sizes = product.productOptions;
-  const productId = product._id || "";
-  const variantId = "00000000-0000-0000-0000-000000000000";
   const stockNumber = product.stock?.quantity;
-  const isInStock = product.stock?.inStock ? 10 : 0;
+  const isInStock = product.stock?.inventoryStatus === "IN_STOCK" ? 10 : 0;
 
   const wixClient = useWixClient();
+  const { addItem, isLoading } = useCartStore();
 
+<<<<<<< HEAD
+  const handleAddToCart = () => {
+    addItem(wixClient, productId, quantity, selectedOptions);
+  };
+=======
   const { addItem } = useCartStore();
 
   // const addProduct = async () => {
@@ -41,6 +51,7 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
   //   });
   //   console.log(cart);
   // };
+>>>>>>> main
 
   return (
     <div className="flex flex-col gap-8">
@@ -48,12 +59,25 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
         <SizeOption
           sizeOptions={sizes}
           selectedOptions={selectedOptions}
+<<<<<<< HEAD
+          setSelectedOptions={(value) => setSelectedOptions(productId, value)}
+=======
           setSelectedOptions={setSelectedOptions}
+>>>>>>> main
         />
       )}
 
       <QuantityOption
         quantity={quantity}
+<<<<<<< HEAD
+        setQuantity={(value) => setQuantity(productId, value)}
+        stockNumber={stockNumber ? stockNumber : isInStock}
+      />
+
+      <Button onClick={handleAddToCart} disabled={isLoading} button>
+        Ajouter au panier
+      </Button>
+=======
         setQuantity={setQuantity}
         stockNumber={stockNumber ? stockNumber : isInStock}
       />
@@ -68,6 +92,7 @@ const ProductPageOptions = ({ product }: ProductOptionsProps) => {
           Ajouter au panier
         </Button>
       </div>
+>>>>>>> main
     </div>
   );
 };

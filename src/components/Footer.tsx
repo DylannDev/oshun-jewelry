@@ -5,15 +5,15 @@ import {
   PiEnvelopeSimple,
 } from "react-icons/pi";
 import { FaCcMastercard, FaCcVisa, FaCcPaypal } from "react-icons/fa6";
+import { navbarLinks } from "@/config/data";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <div className="bg-black text-white text-sm font-light h-max mt-24 mx-auto max-w-[2048px] pt-16 pb-8 px-4 md:px-8 lg:px-16 xl:px-32">
+    <div className="bg-black text-white text-sm font-light h-max mt-16 mx-auto max-w-[2048px] pt-16 pb-8 px-4 md:px-8 lg:px-16 xl:px-32">
       <div className="flex flex-col md:flex-row gap-12 md:gap-2 justify-between border-b border-gray-100 pb-16">
         <div className="flex flex-col items-center md:items-start gap-4">
-          <Link href="/" className="text-2xl font-bold">
-            OSHUN
-          </Link>
+          <Logo color="white" />
           <div className="flex gap-2">
             <a href="/">
               <PiWhatsappLogo className="text-3xl" />
@@ -23,21 +23,29 @@ const Footer = () => {
             </a>
           </div>
           <span className="flex items-center gap-2">
-            <PiEnvelopeSimple className="text-2xl" /> oshun.jewelry@gmail.com
+            <PiEnvelopeSimple className="text-2xl" /> hello@oshun.com
           </span>
         </div>
         <div className="flex flex-col items-center md:items-start gap-4 md:gap-8 hover-underline">
           <h3 className="font-semibold uppercase">Nous Visiter</h3>
           <div className="flex flex-col items-center md:items-start gap-4 hover-underline justify-center">
-            <Link href="/">Accueil</Link>
-            <Link href="/">Nos Bijoux</Link>
-            <Link href="/">À Propos</Link>
-            <Link href="/">Contact</Link>
+            {navbarLinks.map(
+              (link, index) =>
+                index < 5 && (
+                  <Link
+                    key={index}
+                    href={`/list?cat=${link.href}`}
+                    className="hover:underline underline-offset-8"
+                  >
+                    {link.label}
+                  </Link>
+                )
+            )}
           </div>
         </div>
         <div className="flex flex-col items-center md:items-start gap-4 md:gap-8">
           <h3 className="font-semibold uppercase">Légal</h3>
-          <div className="flex flex-col items-center md:items-start gap-4 hover-underline justify-center">
+          <div className="flex flex-col items-center md:items-start gap-4 hover-underline underline-offset-8 justify-center">
             <Link href="/">Conditions Générales de Vente</Link>
             <Link href="/">Politique de Confidentialité</Link>
             <Link href="/">Paramètres des Cookies</Link>
@@ -56,7 +64,7 @@ const Footer = () => {
       <div className="flex flex-col pt-8">
         <div className="flex flex-col  md:flex-row items-center md:justify-between gap-2">
           <div className="">
-            © 2024 <span className="font-semibold">OSHUN JEWELRY</span>{" "}
+            © 2024 <span className="font-semibold">OSHUN</span>{" "}
           </div>
           <div className="">
             Développé par{" "}

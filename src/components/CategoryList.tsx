@@ -1,14 +1,14 @@
-import { wixClientServer } from "@/lib/wixClientServer";
 import CategoryCard from "./CategoryCard";
 import { collections } from "@wix/stores";
 
-const CategoryList = async () => {
-  const wixClient = await wixClientServer();
-  const categories = await wixClient.collections.queryCollections().find();
+type CategoryListProps = {
+  categories: collections.CollectionsQueryResult;
+};
 
+const CategoryList = ({ categories }: CategoryListProps) => {
   return (
-    <div className="flex gap-4 md:gap-8 overflow-x-scroll scrollbar-hide mt-8">
-      {categories.items.map((category: collections.Collection) => (
+    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 w-full">
+      {categories.items.map((category) => (
         <CategoryCard key={category._id} category={category} />
       ))}
     </div>
