@@ -2,8 +2,14 @@ import { create } from "zustand";
 import { currentCart } from "@wix/ecom";
 import { WixClient } from "@/context/wixContext";
 
+type CustomCart = currentCart.Cart & {
+  subtotal?: {
+    amount: string;
+  };
+};
+
 type CartState = {
-  cart: currentCart.Cart | null;
+  cart: CustomCart | null; // Utilisation de CustomCart avec la propriété subtotal
   isLoading: boolean;
   counter: number;
   getCart: (wixClient: WixClient) => Promise<void>;
@@ -17,7 +23,7 @@ type CartState = {
 };
 
 export const useCartStore = create<CartState>((set) => ({
-  cart: [],
+  cart: null, // Initialisé à null
   isLoading: false,
   counter: 0,
 
@@ -25,7 +31,7 @@ export const useCartStore = create<CartState>((set) => ({
     try {
       const cart = await wixClient.currentCart.getCurrentCart();
       set({
-        cart: cart || [],
+        cart: cart || null,
         isLoading: false,
         counter: cart?.lineItems.length || 0,
       });

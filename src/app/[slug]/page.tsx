@@ -7,9 +7,9 @@ import DOMPurify from "isomorphic-dompurify";
 import ShopValues from "@/components/ShopValues";
 
 type SinglePageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const SinglePage = async ({ params }: SinglePageProps) => {

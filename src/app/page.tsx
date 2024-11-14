@@ -4,37 +4,35 @@ import Slider from "@/components/Slider";
 import { wixClientServer } from "@/lib/wixClientServer";
 import { Suspense } from "react";
 import ShopValues from "@/components/ShopValues";
+import Loader from "@/components/Loader";
 
 const HomePage = async () => {
   const wixClient = await wixClientServer();
   const categories = await wixClient.collections.queryCollections().find();
 
   return (
-    <div className="">
+    <div className="flex-grow">
       <Slider />
       <div className="mt-24">
         <h1 className="heading-home">Nouveautés</h1>
-        <Suspense fallback={"loading"}>
-          <ProductList
-            categoryId={process.env.FEATURED_PRODUCTS_CATEGORY_ID!}
-            limit={5}
-          />
-        </Suspense>
+
+        <ProductList
+          categoryId={process.env.FEATURED_PRODUCTS_CATEGORY_ID!}
+          limit={5}
+        />
       </div>
       <div className="mt-24">
         <h1 className="heading-home">Nos produits</h1>
-        <Suspense fallback={"loading"}>
-          <CategoryList categories={categories} />
-        </Suspense>
+
+        <CategoryList categories={categories} />
       </div>
       <div className="mt-24">
         <h1 className="heading-home">Tendances</h1>
-        <Suspense fallback={"loading"}>
-          <ProductList
-            categoryId={process.env.TRENDING_PRODUCTS_CATEGORY_ID!}
-            limit={5}
-          />
-        </Suspense>
+
+        <ProductList
+          categoryId={process.env.TRENDING_PRODUCTS_CATEGORY_ID!}
+          limit={5}
+        />
       </div>
       <ShopValues />
     </div>

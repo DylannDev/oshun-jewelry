@@ -7,9 +7,9 @@ import { Suspense } from "react";
 import NotFound from "../not-found";
 
 type ListPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     cat?: string;
-  };
+  }>;
 };
 
 const ListPage = async ({ searchParams }: ListPageProps) => {
