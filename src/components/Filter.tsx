@@ -3,6 +3,7 @@
 
 import { collections } from "@wix/stores";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Select from "./Select";
 
 type FilterProps = { categories: collections.Collection[]; sizes: string[] };
 
@@ -27,51 +28,51 @@ const Filter = ({ categories, sizes }: FilterProps) => {
     router.replace(`${pathname}?${params.toString()}`);
   };
 
+  const categoryOptions = categories
+    .filter(
+      (category) => category._id !== "00000000-000000-000000-000000000001"
+    )
+    .map((category) => ({
+      label: category.name || "",
+      value: category.slug || "",
+    }));
+
+  const sizeOptions = sizes.map((size) => ({
+    label: size,
+    value: size,
+  }));
+
   return (
-    <div className="mt-12 flex justify-between">
-      <div className="flex gap-6 flex-wrap">
-        <select
-          name="cat"
-          id=""
-          className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
-          onChange={handleFilterChange}
-        >
-          <option value="all-products">Catégories</option>
-          {categories.map(
-            (category) =>
-              category._id !== "00000000-000000-000000-000000000001" && (
-                <option key={category._id} value={category.slug || ""}>
-                  {category.name}
-                </option>
-              )
-          )}
-        </select>
-        <select
-          name="size"
-          id=""
-          className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
-          onChange={handleFilterChange}
-          value={searchParams.get("size") || ""}
-        >
-          <option value="">Taille</option>
-          {sizes.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
+    <div className="py-6 flex gap-2 justify-between border-b border-x border-gray-200 px-4">
+      <div className="flex gap-2 w-2/3 sm:w-full">
+        <div className="max-w-48 w-full">
+          <Select
+            name="cat"
+            options={categoryOptions}
+            onChange={handleFilterChange}
+            placeholder="Catégories"
+          />
+        </div>
+        <div className="max-w-48 w-full">
+          <Select
+            name="size"
+            options={sizeOptions}
+            onChange={handleFilterChange}
+            placeholder="Taille"
+            value={searchParams.get("size") || ""}
+          />
+        </div>
       </div>
-      <div className="flex gap-6 h-fit">
-        <select
+      <div className="max-w-48 w-1/3 sm:w-full">
+        <Select
           name="sort"
-          id=""
-          className="py-2 px-4 rounded-2xl text-xs font-medium bg-gray-200 outline-none"
+          options={[
+            { label: "Prix croissant", value: "ascending" },
+            { label: "Prix décroissant", value: "descending" },
+          ]}
           onChange={handleFilterChange}
-        >
-          <option value="">Trier par</option>
-          <option value="ascending">Prix croissant</option>
-          <option value="descending">Prix décroissant</option>
-        </select>
+          placeholder="Trier par"
+        />
       </div>
     </div>
   );

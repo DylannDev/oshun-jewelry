@@ -46,13 +46,13 @@ const Slider = () => {
   }, []);
 
   // SLIDER ANIMATION
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  //   }, 6000);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    }, 6000);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="relative h-[600px] overflow-hidden">
@@ -63,7 +63,7 @@ const Slider = () => {
         {slides.map((slide, index) => (
           <div
             ref={index === current ? sliderRef : null}
-            className="relative w-[calc(100vw-32px)] md:w-[calc(100vw-64px)] lg:w-[calc(100vw-96px)] xl:w-[calc(100vw-192px)] h-[600px]"
+            className="relative w-[calc(100vw-16px)] min-[900px]:w-[calc(100vw-64px)] lg:w-[calc(100vw-96px)] xl:w-[calc(100vw-192px)] h-[600px]"
             key={slide.id}
           >
             <Image

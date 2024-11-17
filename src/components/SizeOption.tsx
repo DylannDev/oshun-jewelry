@@ -3,6 +3,7 @@
 import { products } from "@wix/stores";
 import { Dispatch, SetStateAction, ChangeEvent, useEffect } from "react";
 import { PiCaretDown } from "react-icons/pi";
+import Select from "./Select";
 
 type SizeOptionsProps = {
   sizeOptions: products.ProductOption[];
@@ -19,8 +20,8 @@ const SizeOption = ({
   useSelect = false,
   showTitle = true,
 }: SizeOptionsProps) => {
-  const options = sizeOptions[0].choices;
-  const firstOption = options && options[0].value;
+  const options = sizeOptions[0]?.choices || [];
+  const firstOption = options[0]?.value;
 
   useEffect(() => {
     if (!selectedOptions && firstOption) {
@@ -36,43 +37,35 @@ const SizeOption = ({
     setSelectedOptions(event.target.value);
   };
 
+  const sizeValues = options
+    .filter((size) => size.inStock && size.value)
+    .map((size) => ({
+      label: size.value || "",
+      value: size.value || "",
+    }));
+
   return (
     <div className="flex flex-col gap-2 w-full">
       {showTitle && <h4 className="text-xs uppercase font-bold">Taille</h4>}
       {useSelect ? (
         // Si `useSelect` est vrai, on utilise la balise <select>
-        <div className="relative w-full">
-          <select
-            name="type"
-            className="border hover:border-black rounded-lg px-2 py-[12.5px] text-xs outline-none focus:border-black appearance-none w-full"
-            value={selectedOptions}
-            onChange={handleSelectChange}
-          >
-            {options &&
-              options.map(
-                (size) =>
-                  size.inStock &&
-                  size.value && (
-                    <option key={size.value} value={size.value}>
-                      {size.value}
-                    </option>
-                  )
-              )}
-          </select>
-          <span className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-            <PiCaretDown className="text-gray-500" />
-          </span>
-        </div>
+        <Select
+          name="type"
+          options={sizeValues}
+          value={selectedOptions}
+          onChange={handleSelectChange}
+          placeholder="Taille"
+        />
       ) : (
         // Sinon, on utilise les boutons
-        <div className="flex items-center gap-2">
+        <div className="flex flex-row flex-wrap xl:flex-nowrap gap-2 w-full">
           {options &&
             options.map(
               (size) =>
                 size.inStock &&
                 size.value && (
                   <button
-                    className={`flex justify-center w-full max-w-[150px] border hover:border-black rounded-lg px-2 py-[10px] text-xs ${
+                    className={`flex justify-center w-fit min-[450px]:w-full md:w-fit xl:w-full min-w-[45px] max-w-[150px] border hover:border-black rounded-lg px-2 py-[10px] text-xs ${
                       selectedOptions === size.value
                         ? "border-black"
                         : "border-gray-200"

@@ -3,6 +3,7 @@ type FormInputProps = {
   inputType: string;
   inputName: string;
   placeholder: string;
+  value: string; // Ajout de la propriété value
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
@@ -11,6 +12,7 @@ const FormInput = ({
   inputType,
   inputName,
   placeholder,
+  value,
   onChange,
 }: FormInputProps) => {
   return (
@@ -20,7 +22,8 @@ const FormInput = ({
         type={inputType}
         name={inputName}
         placeholder={placeholder}
-        className="ring-1 ring-gray-200 rounded-lg p-3 text-sm font-light placeholder:capitalize placeholder:text-xs placeholder:font-light"
+        value={value} // Ajout de la propriété value
+        className="ring-1 ring-gray-200 rounded-lg p-3 text-sm font-light placeholder:capitalize placeholder:text-[13px] placeholder:font-light"
         onChange={onChange}
         required
       />

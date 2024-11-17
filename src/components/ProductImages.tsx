@@ -5,7 +5,7 @@ type ProductImagesProps = products.MediaItem[];
 
 const ProductImages = ({ images }: { images: ProductImagesProps }) => {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-2 min-[900px]:gap-4">
       {images.map((image) => (
         <Image
           key={image._id}
