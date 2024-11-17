@@ -3,16 +3,19 @@
 
 import Button from "./Button";
 import CartItem from "./CartItem";
-import { RxCross1 } from "react-icons/rx";
 import { useCartStore } from "@/hooks/useCartStore";
 import useWixClient from "@/hooks/useWixClient";
 import { currentCart } from "@wix/ecom";
+import Loader from "./Loader";
+import { PiX } from "react-icons/pi";
+import { HiOutlineShoppingBag } from "react-icons/hi2";
 
 type CartModalProps = {
-  setIsCartOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isAnimating: boolean;
+  closeCart: () => void;
 };
 
-const CartModal = ({ setIsCartOpen }: CartModalProps) => {
+const CartModal = ({ isAnimating, closeCart }: CartModalProps) => {
   const wixClient = useWixClient();
   const { cart, isLoading } = useCartStore();
 
@@ -40,53 +43,67 @@ const CartModal = ({ setIsCartOpen }: CartModalProps) => {
     }
   };
 
-  console.log("cart", cart);
-
   return (
-    <div className="w-max absolute p-6 rounded-lg shadow-md bg-white top-12 right-0 flex flex-col z-20 border border-gray-100">
-      <div className="flex justify-between items-center">
+    <div
+      className={`fixed top-0 right-0 w-full sm:w-[500px] h-full bg-white z-50 flex flex-col border border-gray-100 shadow-lg 
+                  ${isAnimating ? "slide-in" : "slide-out"}`}
+    >
+      <div className="flex justify-between items-center p-6 border-b border-gray-200">
         <h2 className="text-xl font-semibold">Mon panier</h2>
-        <RxCross1
-          className="cursor-pointer p-2 text-3xl bg-red-light rounded-md text-white"
-          onClick={() => setIsCartOpen(false)}
-        />
+        <div
+          onClick={closeCart}
+          className="hover:bg-black/5 rounded-md p-1 cursor-pointer"
+        >
+          <PiX className="text-xl" />
+        </div>
       </div>
-      {isLoading ? (
-        "Chargement..."
-      ) : !cart || !cart.lineItems || cart.lineItems.length === 0 ? (
-        <p>Votre panier est vide.</p>
-      ) : (
-        <>
-          <div className="flex flex-col gap-8 border-b border-gray-100 py-8">
-            {cart.lineItems.map((item) => (
-              <CartItem key={item._id} cartItem={item} />
-            ))}
-          </div>
-          <div className="pt-8">
-            <div className="flex items-center justify-between font-semibold">
-              <span>Total</span>
-              <span>{parseFloat(cart.subtotal?.amount || "0")}€</span>
-            </div>
-            <p className="text-gray-500 text-xs font-light mt-2 mb-4">
-              Les frais d'expédition seront ajoutés lors du paiement.
-            </p>
-            <div className="flex justify-between gap-4 text-sm">
-              <Button href="/" color="white">
-                Voir le panier
-              </Button>
-              <Button
-                href="/"
-                color="green"
-                disabled={isLoading}
-                onClick={handleCheckout}
-                button
-              >
-                Paiement
-              </Button>
+      <div className="flex-grow p-6 overflow-y-scroll">
+        {!cart || !cart.lineItems || cart.lineItems.length === 0 ? (
+          <div className="h-full grid place-content-center">
+            <div className="flex flex-col items-center gap-4">
+              <span className="rounded-xl bg-black/5 p-4">
+                <HiOutlineShoppingBag className="text-5xl text-black" />
+              </span>
+              <p className="text-lg">Votre panier est vide.</p>
             </div>
           </div>
-        </>
-      )}
+        ) : (
+          <div className="h-full flex flex-col">
+            <div className="flex flex-col flex-grow gap-8">
+              {cart.lineItems.map((item) => (
+                <CartItem key={item._id} cartItem={item} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="p-6 border-t border-gray-200 mt-6">
+        <div className="flex items-center justify-between font-semibold">
+          <span>Total</span>
+          <span>{parseFloat((cart && cart.subtotal?.amount) || "0")}€</span>
+        </div>
+        <p className="text-gray-500 text-[13px] font-light mt-2">
+          Les frais d'expédition seront ajoutés lors du paiement.
+        </p>
+      </div>
+      <div className="p-6 flex flex-col justify-between gap-4 text-sm border-t border-gray-200">
+        <Button
+          href="/"
+          disabled={isLoading}
+          onClick={() => {
+            // handleCheckout();
+            closeCart();
+          }}
+          button
+        >
+          Valider mon panier
+        </Button>
+        <div className="hidden sm:flex">
+          <Button href="/" color="white" onClick={() => closeCart()} button>
+            Continuer mes achats
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
