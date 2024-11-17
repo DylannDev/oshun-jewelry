@@ -24,9 +24,17 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <WixClientContextProvider>
-          <div className="flex flex-col min-h-screen mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24">
+          <div className="flex flex-col min-h-screen mx-auto max-w-[2048px] px-2 min-[900px]:px-8 lg:px-16 xl:px-24">
             <Navbar />
-            <Suspense fallback={<Loader />}>{children}</Suspense>
+            <Suspense
+              fallback={
+                <div className="h-[calc(100dvh-80px)]">
+                  <Loader />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
           </div>
           <Footer />
         </WixClientContextProvider>
