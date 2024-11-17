@@ -19,8 +19,6 @@ const ProfileIcon = ({ setMenuOpen }: ProfileIconProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isLoggedIn, checkLoginStatus, setIsLoggedIn } = useAuthStore();
 
-  console.log("isLoggedIn", isLoggedIn);
-
   const wixClient = useWixClient();
   const router = useRouter();
 

@@ -221,7 +221,7 @@ const LoginPage = () => {
         >
           <h1 className="text-2xl font-semibold">{MODE_TITLES[mode]}</h1>
           <p>
-            Connectez-vous pour accéder à l'historique de vos commandes et
+            Connectez-vous pour accéder à l&apos;historique de vos commandes et
             mettre à jour vos coordonnées.
           </p>
           {renderFormInputs()}
