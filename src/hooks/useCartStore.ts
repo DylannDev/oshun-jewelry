@@ -9,7 +9,7 @@ type CustomCart = currentCart.Cart & {
 };
 
 type CartState = {
-  cart: CustomCart | null; // Utilisation de CustomCart avec la propriété subtotal
+  cart: CustomCart | null;
   isLoading: boolean;
   counter: number;
   getCart: (wixClient: WixClient) => Promise<void>;
@@ -20,10 +20,15 @@ type CartState = {
     selectedOptions: string
   ) => Promise<void>;
   removeItem: (wixClient: WixClient, itemId: string) => Promise<void>;
+  updateItemQuantity: (
+    wixClient: WixClient,
+    itemId: string,
+    quantity: number
+  ) => Promise<void>;
 };
 
 export const useCartStore = create<CartState>((set) => ({
-  cart: null, // Initialisé à null
+  cart: null,
   isLoading: false,
   counter: 0,
 
@@ -33,7 +38,7 @@ export const useCartStore = create<CartState>((set) => ({
       set({
         cart: cart || null,
         isLoading: false,
-        counter: cart?.lineItems.length || 0,
+        counter: cart?.lineItems?.length || 0,
       });
     } catch (err) {
       set((prev) => ({ ...prev, isLoading: false }));
@@ -47,7 +52,7 @@ export const useCartStore = create<CartState>((set) => ({
         lineItems: [
           {
             catalogReference: {
-              appId: "215238eb-22a5-4c36-9e7b-e7c08025e04e", // ID fixe de l'app Stores
+              appId: "215238eb-22a5-4c36-9e7b-e7c08025e04e",
               catalogItemId: productId,
               options: {
                 options: {
@@ -67,9 +72,9 @@ export const useCartStore = create<CartState>((set) => ({
       });
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Error adding item to cart:", error.message);
+        // console.error("Error adding item to cart:", error.message);
       }
-      set({ isLoading: false });
+      set((prev) => ({ ...prev, isLoading: false }));
     }
   },
 
@@ -85,9 +90,26 @@ export const useCartStore = create<CartState>((set) => ({
       });
     } catch (error) {
       if (error instanceof Error) {
-        console.error("Error removing item from cart:", error.message);
+        // console.error("Error removing item from cart:", error.message);
       }
-      set({ isLoading: false });
+      set((prev) => ({ ...prev, isLoading: false }));
+    }
+  },
+
+  updateItemQuantity: async (wixClient, itemId, quantity) => {
+    set((state) => ({ ...state, isLoading: true }));
+    try {
+      const response =
+        await wixClient.currentCart.updateCurrentCartLineItemQuantity([
+          { _id: itemId, quantity },
+        ]);
+      set({
+        cart: response.cart,
+        isLoading: false,
+      });
+    } catch (error) {
+      // console.error("Error updating item quantity:", error);
+      set((prev) => ({ ...prev, isLoading: false }));
     }
   },
 }));

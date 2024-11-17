@@ -12,6 +12,12 @@ export type CountryOption = {
 
 export type SearchbarProps = {
   isVisible?: boolean;
+  setIsVisible?: (visible: boolean) => void;
+  closeMenu?: () => void;
+};
+
+export type SearchIconProps = {
+  isVisible: boolean;
   setIsVisible: (visible: boolean) => void;
 };
 

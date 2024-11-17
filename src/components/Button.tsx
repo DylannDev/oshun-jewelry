@@ -28,7 +28,7 @@ const Button = ({
   onClick,
 }: ButtonProps) => {
   const baseClasses =
-    "rounded-lg py-3 px-4 font-semibold text-center whitespace-nowrap uppercase text-[13px] tracking-wider";
+    "rounded-lg py-[10px] px-3 sm:py-3 sm:px-4 font-medium text-center whitespace-nowrap uppercase text-[12px]";
   const widthClass = width === "large" ? "w-full" : "w-fit";
   const colorClasses = {
     white:

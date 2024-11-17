@@ -9,6 +9,7 @@ import { navbarLinks } from "@/config/data";
 import Logo from "./Logo";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
     <div className="bg-black text-white text-sm font-light h-max mt-16 mx-auto max-w-[2048px] pt-16 pb-8 px-4 md:px-8 lg:px-16 xl:px-32">
       <div className="flex flex-col md:flex-row gap-12 md:gap-2 justify-between border-b border-gray-100 pb-16">
@@ -64,7 +65,7 @@ const Footer = () => {
       <div className="flex flex-col pt-8">
         <div className="flex flex-col  md:flex-row items-center md:justify-between gap-2">
           <div className="">
-            © 2024 <span className="font-semibold">OSHUN</span>{" "}
+            © {currentYear} <span className="font-semibold">OSHUN</span>{" "}
           </div>
           <div className="">
             Développé par{" "}

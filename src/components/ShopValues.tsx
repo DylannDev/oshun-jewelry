@@ -4,7 +4,7 @@ const ShopValues = () => {
   return (
     <div className="mt-24 pt-16 border-t border-gray-200 w-full">
       <h1 className="heading-home text-center">Pourquoi Choisir Oshun ?</h1>
-      <div className="flex flex-col items-center md:flex-row md:justify-between pt-10">
+      <div className="flex flex-col items-center md:flex-row md:justify-between gap-4 md:gap-0 pt-5 md:pt-10">
         {values.map((value, index) => (
           <div
             key={index}

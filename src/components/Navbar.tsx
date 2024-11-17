@@ -4,23 +4,27 @@ import Link from "next/link";
 import Menu from "./Menu";
 import Searchbar from "./Searchbar";
 import NavIcons from "./NavIcons";
+import CartIcon from "./CartIcon";
 import Logo from "./Logo";
 import { navbarLinks } from "@/config/data";
 import { useState } from "react";
+import ProfileIcon from "./ProfileIcon";
 
 const Navbar = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="h-20 relative flex justify-center">
       {/* MOBILE */}
-      <div className="flex items-center justify-between h-full w-full md:hidden">
+      <div className="absolute z-50 flex min-[900px]:hidden items-center justify-between h-full w-full">
+        <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Logo />
-        <Menu />
+        {menuOpen ? <ProfileIcon setMenuOpen={setMenuOpen} /> : <CartIcon />}
       </div>
       {/* SCREENS */}
-      <div className="hidden md:flex fixed w-full z-50 bg-white mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24 h-[80px] border-b border-gray-200">
-        <div className="hidden md:flex items-center justify-between gap-8 h-full w-full">
+      <div className="hidden min-[900px]:flex fixed w-full z-50 bg-white mx-auto max-w-[2048px] px-4 md:px-8 lg:px-16 xl:px-24 h-[80px] border-b border-gray-200">
+        <div className="flex items-center justify-between gap-8 h-full w-full">
           <Logo />
           <div className="relative w-full flex justify-center">
             {isVisible ? (
@@ -30,7 +34,7 @@ const Navbar = () => {
                 <Searchbar isVisible={isVisible} setIsVisible={setIsVisible} />
               </div>
             ) : (
-              <nav className="hidden xl:flex gap-4 text-sm">
+              <nav className="flex gap-4 text-sm">
                 {navbarLinks.map(
                   (link, index) =>
                     index < 5 && (

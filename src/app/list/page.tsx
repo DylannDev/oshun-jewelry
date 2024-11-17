@@ -1,9 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import BannerList from "@/components/BannerList";
 import Filter from "@/components/Filter";
 import ProductList from "@/components/ProductList";
 import { wixClientServer } from "@/lib/wixClientServer";
-import { Suspense } from "react";
 import NotFound from "../not-found";
 
 type ListPageProps = {
@@ -57,20 +55,19 @@ const ListPage = async ({ searchParams }: ListPageProps) => {
   sizes.sort((a, b) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
 
   return (
-    <>
-      <BannerList />
+    <div>
+      <div className="py-6 border-b min-[900px]:border-x border-gray-200">
+        <h1 className=" text-center text-xl font-medium">
+          {category?.collection?.name}
+        </h1>
+      </div>
       <Filter categories={categories} sizes={sizes} />
-      <h1 className="mt-12 mb-8 text-xl font-semibold ">
-        {category?.collection?.name}
-      </h1>
-      <Suspense fallback="Chargement...">
-        <ProductList
-          categoryId={
-            category.collection?._id || "00000000-000000-000000-000000000001"
-          }
-        />
-      </Suspense>
-    </>
+      <ProductList
+        categoryId={
+          category.collection?._id || "00000000-000000-000000-000000000001"
+        }
+      />
+    </div>
   );
 };
 

@@ -1,4 +1,11 @@
-import { CiFaceSmile, CiGlobe, CiMedal, CiStar } from "react-icons/ci";
+import {
+  CiFaceSmile,
+  CiGlobe,
+  CiMedal,
+  CiPhone,
+  CiShoppingBasket,
+  CiUser,
+} from "react-icons/ci";
 
 export const navbarLinks = [
   { href: "nouveautés", label: "Nouveautés" },
@@ -6,9 +13,9 @@ export const navbarLinks = [
   { href: "vêtements", label: "Vêtements" },
   { href: "maillots", label: "Maillots" },
   { href: "accessoires", label: "Accessoires" },
-  { href: "/", label: "Contact" },
-  { href: "/", label: "Panier" },
-  { href: "/", label: "Se Déconnecter" },
+  { href: "/profile", label: "Mon profil", icon: <CiUser /> },
+  { href: "/", label: "Contact", icon: <CiPhone /> },
+  { href: "/", label: "Panier", icon: <CiShoppingBasket /> },
 ];
 
 export const values = [
