@@ -1,23 +1,24 @@
 import { wixClientServer } from "@/lib/wixClientServer";
+import { protectRoute } from "@/utils/protectRoute";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-
   const wixClient = await wixClientServer();
+  await protectRoute();
 
   let order;
   try {
     order = await wixClient.orders.getOrder(id);
   } catch (err) {
-    return notFound();
+    return notFound(); // Si l'ordre n'existe pas ou problème, retourne une page 404
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-180px)] items-center justify-center ">
-      <div className="shadow-[rgba(0,_0,_0,_0.25)_0px_25px_50px_-12px] px-40 py-20">
-        <h1 className="text-xl">Détails de la commande</h1>
+    <div className="flex flex-col h-[calc(100vh-180px)] items-center justify-center">
+      <div className="px-40 py-20 border border-gray-200 rounded-xl">
+        <h1 className="text-xl font-semibold">Détails de la commande</h1>
         <div className="mt-12 flex flex-col gap-6">
           <div className="">
             <span className="font-medium">Numéro de commande: </span>
@@ -55,8 +56,8 @@ const OrderPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           </div>
         </div>
       </div>
-      <Link href="/" className="underline mt-6">
-        Have a problem? Contact us
+      <Link href="/" className="underline underline-offset-8 mt-6">
+        Vous rencontrez un problème ? Contactez-nous
       </Link>
     </div>
   );
